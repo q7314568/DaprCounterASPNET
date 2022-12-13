@@ -1,0 +1,54 @@
+version: '3.4'
+
+services:
+############################
+  # daprcounteraspnet app + Dapr sidecar
+############################
+  daprcounteraspnet:
+    image: ${DOCKER_REGISTRY-}daprcounteraspnet
+    container_name: daprcounteraspnet
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+     - hello-dapr
+    depends_on:
+    - redis
+    - placement
+  daprcounteraspnet-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "daprcounteraspnet",
+    "-app-port", "80",
+    "-placement-host-address", "placement:50006",
+    #"-dapr-grpc-port", "3501",
+    #"-app-protocol", "grpc",
+    "-app-protocol", "http",
+    "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - daprcounteraspnet
+    network_mode: "service:daprcounteraspnet"
+  ############################
+  # Dapr placement service
+  ############################
+  placement:
+    image: "daprio/dapr:1.9.5"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+    networks:
+     - hello-dapr
+  ############################
+  # Redis state store
+  ############################
+  redis:
+    image: "redis:alpine"
+    hostname: redisstate
+    ports:
+      - "6379:6379"
+    networks:
+     - hello-dapr
+networks:
+    hello-dapr:

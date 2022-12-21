@@ -1,10 +1,16 @@
 using Dapr.Client;
+using Grpc.Net.Client;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//builder.Services.AddControllers().AddDapr();
 
-builder.Services.AddControllers().AddDapr();
+builder.Services.AddControllers().AddDapr(builder => builder.UseHttpEndpoint("http://localhost:5380")
+                                               .UseGrpcEndpoint("http://localhost:5301"));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

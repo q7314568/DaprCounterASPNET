@@ -4,9 +4,9 @@ services:
   daprcounteraspnet:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://0.0.0.0:5300
     ports:
-      - "5104:80"
+      - "5380:5300"
       - "3501:3501"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

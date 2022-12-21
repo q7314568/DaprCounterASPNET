@@ -19,10 +19,11 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "daprcounteraspnet",
-    "-app-port", "80",
+    "-app-port", "5300",
     "-placement-host-address", "placement:50006",
-    #"-dapr-grpc-port", "3501",
-    #"-app-protocol", "grpc",
+    "-dapr-http-port", "5380",
+    "-dapr-grpc-port", "5301", #set -dapr-grpc-port
+    "-app-protocol", "grpc",
     "-app-protocol", "http",
     "-components-path", "/components"]
     volumes:

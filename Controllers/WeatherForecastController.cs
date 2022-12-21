@@ -31,6 +31,7 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 
+
     [HttpGet("counter")]
     public async Task<IActionResult> GetCounter([FromServices] DaprClient daprClient)
     {
